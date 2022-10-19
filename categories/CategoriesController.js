@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router(); // Objeto que vou usar para criar minhas rotas.
+const router = express.Router(); // função que vou usar para criar minhas rotas.
 const Category = require("./Category");
 const slugfy = require("slugify");
 
@@ -11,7 +11,7 @@ router.post("/categories/save", (req, res) => {
     var title = req.body.title;
     if (title != undefined) {
         Category.create({
-            title: title,
+            title: title, 
             slug: slugfy(title) // Transforma: "Computação e informatica" => "Computação-e-informatica"
         }).then(() => {
             res.redirect("/admin/categories")
@@ -40,7 +40,6 @@ router.post("/categories/delete", (req, res) => {
 
 router.get("/admin/categories/edit/:id", (req,res) => {
     var id = req.params.id;
-    
     if(isNaN(id)) {
         res.redirect("/admin/categories");
     }
