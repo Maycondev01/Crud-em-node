@@ -1,8 +1,28 @@
 <%- include('partials/header.ejs') %>
-<%- include('partials/navbar.ejs') %>
+<%- include('partials/homenavbar.ejs') %>
 <body>
     <div class="container">
-        <h1>Testando as Views</h1>
+        <hr>
+        <div class="jumbotron">
+            <h1 class="display-4">Bem Vindo</h1>
+            <p class="lead"> O conceito desse aplicativo web é você escrever seus artigos e categorias</p>
+            <hr class="my-4">
+            <p>Aqui você vai otimizar o seu jeito de escrever artigos.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Leia mais</a>
+          </div>
+        
+        <% articles.forEach(article => { %>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><%= article.title %></h2> 
+                </div>
+                <div class="card-body">
+                    <a href="/<%= article.slug%>" class="btn btn-success">Ler Artigo</a>
+                </div>
+            </div>
+            
+        <% }) %>
     </div>
 </body>
 <%- include('partials/footer.ejs') %>

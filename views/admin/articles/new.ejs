@@ -1,0 +1,59 @@
+<%- include('../../partials/header.ejs') %>
+    <%- include('../../partials/navbar.ejs') %>
+
+        <body>
+            <div class="container">
+                <hr>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Novo artigos</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/articles/save">
+                            <input type="text" name="title" class="form-control"
+                                placeholder="Defina o título do artigo"> <br>
+                            <textarea class="form-control" placeholder="Escreva o artigo aqui" name="body"
+                                id="article"></textarea> <br>
+                            <label>Categorias</label>
+                                <select name="category" class="form-control">
+                                    <% categories.forEach((category)=> { %>
+                                        <option value="<%= category.id %>"><%= category.title %></option>
+                                    <% }) %>
+                                </select>
+                                <br>
+                            <button class="btn-success">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </body>
+        <%- include('../../partials/footer.ejs') %>
+            <script src="/tinymce/tinymce.min.js">
+    // Editor de rich text(texto rico) lançado como software de código aberto.
+            </script>
+            <script>
+                tinymce.init({
+                    language: 'pt_BR', // Traduzir para Português
+                    selector: "#article", // Selecionar ID article da textarea
+                    plugins: [ // Plugins | adicionar mais recursos
+                        'advlist', // Para criação de listas
+                        'autolink', // Quando tiver um link no meu texto já ficar azul
+                        'link', // Para criar links com botão
+                        'image', // para importar imagem
+                        'lists',  // Lista simples
+                        'print', // Impressão
+                        'preview', // Prever oque está escrevendo
+                        'searchreplace', // Pesquisar por palavra
+                        'hr', // Uma linha 
+                        'wordcount', // quantidade de palavra
+                        'fullscreen', // Deixar tela cheia
+                        'insertdatetime', // Inserir a data no texto
+                        'media', // Insirir midia videos 
+                        'save', // Salvar como artigo
+                        'table', // criar tabelas
+                        'paste', // Colar coisas
+                        'emoticons' // Para colocar Emojis
+                    ]
+                })
+
+            </script>

@@ -1,0 +1,71 @@
+<%- include('../../partials/header.ejs') %>
+    <%- include('../../partials/navbar.ejs') %>
+
+
+        <div class="container">
+            <hr>
+            <div class="card">
+                <div class="card-header">
+                        <h2>Editar Artigo</h2>
+                </div>
+                <div class="card-body">
+                        <form method="POST" action="/articles/update">
+                        <input type="text" class="form-control" name="title" placeholder="Defina o título"
+                            value="<%= articles.title %>"> <br>
+                        <textarea name="body" class="form-control" id="article"></textarea> <br>
+                        <input type="hidden" value="<%= articles.id %>" name="id">
+                        <label>Categoria</label>
+                        <select name="category" class="form-control">
+                            <% categories.forEach(category => { %>
+                                <% if(category.id == articles.categoryId) { %> <!--SE O ID DO MODEL CATEGORY FOR IGUAL AO CategoryId Do Model Article-->
+                                    <option value="<%= category.id %>" selected><%= category.title %></option> <!--Então mostrar o Selected-->
+                                <% } else { %>
+                                    <option value="<%= category.id %>"><%= category.title %></option>
+                                <% } %>
+
+                            <% }) %>
+                        </select>
+                        <br>
+                        <button class="btn btn-success">Atualizar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <div id="content" style="display:none"> <!--Esconder o display-->
+        <%- articles.body %>
+    </div>
+
+
+<%- include('../../partials/footer.ejs') %>
+
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        language: 'pt_BR', // Traduzir para Português
+                    selector: "#article", // Selecionar ID article da textarea
+                    plugins: [ // Plugins | adicionar mais recursos
+                        'advlist', // Para criação de listas
+                        'autolink', // Quando tiver um link no meu texto já ficar azul
+                        'link', // Para criar links com botão
+                        'image', // para importar imagem
+                        'lists',  // Lista simples
+                        'print', // Impressão
+                        'preview', // Prever oque está escrevendo
+                        'searchreplace', // Pesquisar por palavra
+                        'hr', // Uma linha 
+                        'wordcount', // quantidade de palavra
+                        'fullscreen', // Deixar tela cheia
+                        'insertdatetime', // Inserir a data no texto
+                        'media', // Insirir midia videos 
+                        'save', // Salvar como artigo
+                        'table', // criar tabelas
+                        'paste', // Colar coisas
+                        'emoticons' // Para colocar Emojis
+                    ],
+        init_instance_callback: () => {
+            // Função chamada sempre que o meu editor acabar de ser carregado
+            tinymce.get("article").setContent($("#content").html())
+            // Qual textarea eu quero mexer "article" e defina o conteúdo como: id = "content"
+        }
+    })
+</script>
