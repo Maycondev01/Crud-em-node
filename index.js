@@ -1,11 +1,18 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const session = require("express-session")
 const connection = require('./database/database')
+
+// Controllers
 const CategoriesController = require("./categories/CategoriesController")
 const ArticlesController = require("./articles/ArticlesController")
+const UsersController = require("./user/UsersController")
+
+// Models
 const Article = require("./articles/Article")
 const Category = require("./categories/Category")
+const User = require("./user/User")
 
 // DataBase 
 connection
@@ -19,12 +26,47 @@ connection
 // VIEW ENGINE
 app.set('view engine', 'ejs');
 
+// Sessões
+app.use(session({ // Igual o Sal do Bcrypt
+    secret: "qualquercoisa", cookie: { maxAge: 3000000} 
+}))
+
+
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: false })); // Aceitar dados de formulário
 app.use(bodyParser.json())  // Aceitar dados JSON.
 
 //Arquivos Static
 app.use(express.static('public'));
+
+
+// Router dos Controllers
+app.use("/", CategoriesController);
+app.use("/", ArticlesController);
+app.use("/", UsersController);
+
+/* Como testar o express-session 
+app.get("/session", (req,res) => {
+    req.session.treinamento = "Formação Node.js"
+    req.session.ano = 2022
+    req.session.email = "mayconlundgren186@gmail.com"
+    req.session.user = {
+        username: "maycondouglas",
+        email: "email@email.com",
+        id: 10
+    }
+    res.send('Sessão gerada')
+});
+*/
+
+app.get("/leitura", (req,res) => {
+    res.json({
+        treinamento: req.session.treinamento,
+        ano: req.session.ano,
+        email: req.session.email,
+        user: req.session.user,
+    })
+});
 
 app.get("/", function (req, res) {
     Article.findAll({
@@ -76,10 +118,6 @@ app.get("/category/:slug", function (req, res) {
         res.redirect("/")
     });
 });
-
-app.use("/", CategoriesController);
-
-app.use("/", ArticlesController);
 
 app.listen(8080, function (err) {
     if (err) {
